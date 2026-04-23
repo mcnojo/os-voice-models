@@ -1,0 +1,22 @@
+Flask
+flask-cors
+flask-sock
+python-dotenv
+
+# Speech-to-Text
+faster-whisper
+numpy
+
+# LLM
+llama-cpp-python
+
+# Audio processing
+soundfile
+
+# TTS - Order matters: phonemizer before kokoro
+phonemizer==3.2.1
+misaki[en]
+kokoro
+
+# PyTorch
+torch

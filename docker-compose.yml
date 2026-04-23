@@ -1,0 +1,27 @@
+services:
+  voice-assistant:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/arm64 # good on Apple Silicon; remove if you multi-arch build elsewhere
+    volumes:
+      - ./:/app
+      - model-cache:/root/.cache
+    ports:
+      - "5001:5001"
+    env_file:
+      - .env
+    environment:
+      - IS_LOCAL=true
+      - GGUF_MODEL_PATH=/app/models/qwen2.5-0.5b-instruct-q4_k_m.gguf
+    restart: unless-stopped
+    networks:
+      - voice-net
+
+volumes:
+  model-cache:
+    driver: local
+
+networks:
+  voice-net:
+    driver: bridge
