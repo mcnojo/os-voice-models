@@ -19,11 +19,26 @@ class Config:
     LLM_MAX_TOKENS = int(os.getenv('LLM_MAX_TOKENS', 128))
     LLM_TEMPERATURE = float(os.getenv('LLM_TEMPERATURE', 0.7))
 
-    # TTS (Kokoro-82M)
+    # TTS engine selection: kokoro | omnivoice | supertonic
+    TTS_ENGINE = os.getenv('TTS_ENGINE', 'kokoro')
+
+    # Kokoro-82M
     KOKORO_MODEL_NAME = os.getenv('KOKORO_MODEL_NAME', 'hexgrad/Kokoro-82M')
     KOKORO_VOICE = os.getenv('KOKORO_VOICE', 'af_sarah')
     KOKORO_SPEED = float(os.getenv('KOKORO_SPEED', '1.0'))
     KOKORO_DEVICE = os.getenv('KOKORO_DEVICE', 'cpu')
+
+    # OmniVoice (k2-fsa/OmniVoice)
+    OMNIVOICE_DEVICE = os.getenv('OMNIVOICE_DEVICE', 'mps')
+    OMNIVOICE_VOICE = os.getenv('OMNIVOICE_VOICE', 'female_american')
+    OMNIVOICE_SPEED = float(os.getenv('OMNIVOICE_SPEED', '1.0'))
+    OMNIVOICE_STEPS = int(os.getenv('OMNIVOICE_STEPS', '32'))
+
+    # Supertonic-3 (Supertone/supertonic-3)
+    SUPERTONIC_VOICE = os.getenv('SUPERTONIC_VOICE', 'M1')
+    SUPERTONIC_SPEED = float(os.getenv('SUPERTONIC_SPEED', '1.05'))
+    SUPERTONIC_STEPS = int(os.getenv('SUPERTONIC_STEPS', '5'))
+    SUPERTONIC_LANG = os.getenv('SUPERTONIC_LANG', 'en')
 
     HF_LOCAL_READ_TOKEN = os.getenv("HF_LOCAL_READ_TOKEN")
 

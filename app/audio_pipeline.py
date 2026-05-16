@@ -38,12 +38,13 @@ class AudioPipeline:
 
             logger.info(f"Processing {len(audio_data)} bytes of audio")
 
-            transcription = self.stt_service.transcribe_audio(audio_data, self.sample_rate)
+            transcription, detected_lang = self.stt_service.transcribe_audio(audio_data, self.sample_rate)
             if not transcription or not transcription.strip():
                 result['error'] = "No speech detected in audio"
                 return result
             result['transcription'] = transcription
-            logger.info(f"Transcription: {transcription}")
+            result['detected_lang'] = detected_lang
+            logger.info(f"Transcription ({detected_lang}): {transcription}")
 
             response_text = self.llm_service.generate_response(transcription)
             if not response_text or not response_text.strip():
@@ -52,7 +53,7 @@ class AudioPipeline:
             result['response'] = response_text
             logger.info(f"Response: {response_text}")
 
-            audio_response = self.tts_service.synthesize(response_text)
+            audio_response = self.tts_service.synthesize(response_text, lang=detected_lang)
             if not audio_response:
                 result['error'] = "Failed to synthesize speech"
                 return result

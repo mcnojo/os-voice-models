@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        TTS_ENGINE: ${TTS_ENGINE:-kokoro}
     platform: linux/arm64 # good on Apple Silicon; remove if you multi-arch build elsewhere
     volumes:
       - ./:/app

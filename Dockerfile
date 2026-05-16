@@ -3,6 +3,8 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+ARG TTS_ENGINE=kokoro
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     ENVIRONMENT=production \
@@ -20,11 +22,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy and install Python dependencies
-COPY requirements.txt .
-# Install phonemizer FIRST with exact version
-RUN pip install --no-cache-dir phonemizer==3.2.1
+COPY requirements.txt requirements-tts-*.txt ./
 
+# Install base deps
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install TTS-engine-specific deps
+RUN pip install --no-cache-dir -r requirements-tts-${TTS_ENGINE}.txt
 
 # Create model cache directory
 RUN mkdir -p /root/.cache/huggingface/hub

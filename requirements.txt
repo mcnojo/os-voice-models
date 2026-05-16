@@ -13,10 +13,4 @@ llama-cpp-python
 # Audio processing
 soundfile
 
-# TTS - Order matters: phonemizer before kokoro
-phonemizer==3.2.1
-misaki[en]
-kokoro
-
-# PyTorch
-torch
+# TTS — engine-specific deps are in requirements-tts-*.txt

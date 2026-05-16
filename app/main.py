@@ -79,7 +79,7 @@ def voice_socket(ws):
                             ws.send(json.dumps({
                                 'type': 'audio_response',
                                 'audio': base64.b64encode(result['audio_response']).decode('utf-8'),
-                                'sample_rate': config.SAMPLE_RATE
+                                'sample_rate': tts_service.sample_rate
                             }))
                     else:
                         ws.send(json.dumps({'type': 'error', 'message': result.get('error', 'Processing error')}))

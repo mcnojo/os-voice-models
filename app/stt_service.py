@@ -19,24 +19,27 @@ class STTService:
         )
         logger.info("Faster-Whisper model loaded")
 
-    def transcribe_audio(self, audio_data: bytes, sample_rate: int = None) -> str:
-        """Transcribe raw PCM16 bytes to text."""
+    def transcribe_audio(self, audio_data: bytes, sample_rate: int = None) -> tuple[str, str]:
+        """Transcribe raw PCM16 bytes to text.
+
+        Returns (transcription, detected_language) where detected_language
+        is an ISO-639-1 code (e.g. 'en', 'de').
+        """
         sample_rate = sample_rate or self.config.SAMPLE_RATE
         try:
             audio_float = np.frombuffer(audio_data, dtype=np.int16).astype(np.float32) / 32768.0
 
-            segments, _ = self.model.transcribe(
+            segments, info = self.model.transcribe(
                 audio_float,
-                language="en",
                 vad_filter=True,
                 vad_parameters=dict(min_silence_duration_ms=500)
             )
             transcription = " ".join(seg.text for seg in segments).strip()
-            logger.info(f"Transcription: {transcription}")
-            return transcription
+            logger.info(f"Transcription ({info.language}): {transcription}")
+            return transcription, info.language
         except Exception as e:
             logger.error(f"Transcription error: {e}")
-            return ""
+            return "", "en"
 
     def transcribe_file(self, file_path: str) -> str:
         """Transcribe an audio file on disk."""

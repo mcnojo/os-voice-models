@@ -7,7 +7,7 @@ from app.config import Config
 logger = logging.getLogger(__name__)
 
 class LLMService:
-    """Qwen 2.5 0.5B served via llama-cpp-python (GGUF quantized, CPU)."""
+    """LLM served via llama-cpp-python (GGUF quantized, CPU)."""
 
     def __init__(self):
         self.model = None
@@ -51,7 +51,7 @@ class LLMService:
                 max_tokens=self.config.LLM_MAX_TOKENS,
                 temperature=self.config.LLM_TEMPERATURE,
                 top_p=0.9,
-                stop=["</s>", "<|im_end|>", "User:", "\n\n\n"],
+                stop=["</s>", "<|im_end|>", "<|endoftext|>", "User:", "\n\n\n"],
                 stream=False,
             )
 

@@ -1,0 +1,4 @@
+phonemizer==3.2.1
+misaki[en]
+kokoro
+torch
